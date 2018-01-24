@@ -11,7 +11,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
 
     //数据库版本号
-    private static Integer Version = 2;
+    private static Integer Version = 4;
 
 
     //在SQLiteOpenHelper的子类当中，必须有该构造函数
@@ -52,15 +52,26 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     //数据库升级时调用
     //如果DATABASE_VERSION值被改为2,系统发现现有数据库版本不同,即会调用onUpgrade（）方法
 
-    public static final String TEXT_TYPE = " TEXT";
-    public static final String ALTER_TABLE_MESSAGES_ADD_COLUMN_BUTTON_COPY = "ALTER TABLE user ADD COLUMN " + "age" + TEXT_TYPE;
+    private  static final String TEXT_TYPE = " TEXT";
+    private static final String ALTER_TABLE_MESSAGES_ADD_COLUMN_BUTTON_COPY = "ALTER TABLE user ADD COLUMN " + "age" + TEXT_TYPE;
+    private static final String DROP_TABLE_USER = "DROP TABLE user";
+    private static final String CREATE_TABLE_USER = "create table user(id int primary key,name varchar(200),age varchar(200),sex varchar(200))";
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDb, int oldVersion, int newVersion) {
         System.out.println("更新数据库版本为:" + newVersion);
-        if (oldVersion == 1) {
+        if (oldVersion == 1) {  //版本升级添加字段(以前的数据保留)
             sqLiteDb.beginTransaction();
             sqLiteDb.execSQL(ALTER_TABLE_MESSAGES_ADD_COLUMN_BUTTON_COPY);
+            sqLiteDb.setTransactionSuccessful();
+            sqLiteDb.endTransaction();
+            return;
+        }
+
+        if(oldVersion == 3){ //直接删表重新建立(以前的数据会被删掉)
+            sqLiteDb.beginTransaction();
+            sqLiteDb.execSQL(DROP_TABLE_USER);
+            sqLiteDb.execSQL(CREATE_TABLE_USER);
             sqLiteDb.setTransactionSuccessful();
             sqLiteDb.endTransaction();
             return;

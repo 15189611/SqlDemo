@@ -110,9 +110,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ContentValues valuesHelper = new ContentValues();
 
                 // 向该对象中插入键值对
-                valuesHelper.put("id", 3);
-                valuesHelper.put("name", "charles");
-                valuesHelper.put("age", "55");
+                valuesHelper.put("id", 4);
+                valuesHelper.put("name", "charles4");
+                valuesHelper.put("age", "554");
 
                 // 调用insert()方法将数据插入到数据库当中
                 sqliteDatabaseHelper.insert("user", null, valuesHelper);
@@ -189,8 +189,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //关闭数据库
                 sqliteDatabase3.close();
                 break;
-
-
             //点击删除数据库
             case R.id.delete_database:
 
